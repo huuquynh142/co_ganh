@@ -43,5 +43,9 @@ namespace co_ganh
             this._sohuu = sohuu;
             this._vitri = vitri;
         }
+
+        public Oco()
+        {
+        }
     }
 }

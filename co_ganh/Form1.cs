@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace co_ganh
 {
-    public partial class coghanh : Form 
+    public partial class coghanh : Form
     {
         public static SolidBrush solidBack;
         public static SolidBrush solidWhite;
@@ -19,32 +19,24 @@ namespace co_ganh
         private Graphics graphics;
         Oco[,] _arrayChess;
         private List<Oco> listquanco;
-        private List<Oco> listcot;
-        private List<Oco> listdong;
-        private List<Oco> listcheoxuoi;
-        private List<Oco> listcheonguoc;
         private List<Oco> ListCoThat;
         private List<Oco> list;
         private List<Oco> listQuanKeNhau;
         private Boolean danhco = false;
-        private  int lastDong = 0;
-        private  int lastcot = 0;
-        private  int lastsohuu = 0;
+        private int lastDong = 0;
+        private int lastcot = 0;
+        private int lastsohuu = 0;
         int demQuanTrang = 0;
         int demQuanĐen = 0;
         KiemTra check;
         public static String tennguoi1 = "";
         public static String tennguoi2 = "";
-        public static int luotdi = 1 ;
+        public static int luotdi = 1;
         private Boolean canMove = true;
         public coghanh()
         {
             _arrayChess = new Oco[5, 5];
             listquanco = new List<Oco>();
-            listcot = new List<Oco>();
-            listdong = new List<Oco>();
-            listcheoxuoi = new List<Oco>();
-            listcheonguoc = new List<Oco>();
             ListCoThat = new List<Oco>();
             listQuanKeNhau = new List<Oco>();
             list = new List<Oco>();
@@ -54,7 +46,7 @@ namespace co_ganh
             ban_Co = new Ban_co();
             check = new KiemTra();
             graphics = panel_co_ganh.CreateGraphics();
-           
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -64,33 +56,33 @@ namespace co_ganh
 
         private void panel_co_ganh_Paint(object sender, PaintEventArgs e)
         {
-         
+
             ban_Co.banco(graphics);
             velaiquanco(graphics);
         }
         public void khoitaomangoco()
         {
-            for(int i= 0 ; i <= ban_Co.Sodong; i++)
+            for (int i = 0; i <= ban_Co.Sodong; i++)
             {
-                for(int j = 0; j <= ban_Co.SoCot; j++)
+                for (int j = 0; j <= ban_Co.SoCot; j++)
                 {
-                    _arrayChess[i,j] = new Oco(i,j,new Point(j * Oco._chieuRong + 15 , i * Oco._chieuCao + 15) , 0);
+                    _arrayChess[i, j] = new Oco(i, j, new Point(j * Oco._chieuRong + 15, i * Oco._chieuCao + 15), 0);
                 }
             }
         }
-        public bool DanhCo(int MouseX , int MouseY , Graphics gp , int sohuu)
+        public bool DanhCo(int MouseX, int MouseY, Graphics gp, int sohuu)
         {
-            if (MouseX % (Oco._chieuRong) == 0 || MouseY % (Oco._chieuCao ) ==0)
+            if (MouseX % (Oco._chieuRong) == 0 || MouseY % (Oco._chieuCao) == 0)
                 return false;
-            int cot = MouseX / (Oco._chieuRong );
-            int dong = MouseY / (Oco._chieuCao );
+            int cot = MouseX / (Oco._chieuRong);
+            int dong = MouseY / (Oco._chieuCao);
             _arrayChess[dong, cot].Sohuu = sohuu;
             ban_Co.veQuanCo(gp, _arrayChess[dong, cot].Vitri, solidBack);
             listquanco.Add(_arrayChess[dong, cot]);
             luotdi = sohuu;
             return true;
         }
-       
+
         public void khoitaoquanco()
         {
             for (int i = 0; i <= ban_Co.Sodong; i++)
@@ -109,22 +101,22 @@ namespace co_ganh
                         if (j > 0)
                             nguoichoi2(i, j);
                     if (j == ban_Co.SoCot)
-                        if ( i > 0 && i < 2)
+                        if (i > 0 && i < 2)
                             Nguoichoi1(i, j);
                         else
                             if (i > 1 && i < ban_Co.Sodong)
-                                nguoichoi2(i, j);            
+                            nguoichoi2(i, j);
                 }
             }
         }
-        private void Nguoichoi1(int i , int j)
+        private void Nguoichoi1(int i, int j)
         {
             _arrayChess[i, j].Sohuu = 1;
             ban_Co.veQuanCo(graphics, _arrayChess[i, j].Vitri, solidBack);
             listquanco.Add(_arrayChess[i, j]);
         }
 
-        private void nguoichoi2(int i , int j)
+        private void nguoichoi2(int i, int j)
         {
             _arrayChess[i, j].Sohuu = 2;
             ban_Co.veQuanCo(graphics, _arrayChess[i, j].Vitri, solidWhite);
@@ -133,49 +125,86 @@ namespace co_ganh
 
         private void panel_co_ganh_MouseClick(object sender, MouseEventArgs e)
         {
-           
+
             int currentcot = e.X / (Oco._chieuRong);
             int currnetdong = e.Y / (Oco._chieuCao);
             int currensohuu = 0;
             clearnList();
             list.Clear();
             listQuanKeNhau.Clear();
+            List<Oco> kiemtradoc = new List<Oco>();
+            List<Oco> kiemtranghang = new List<Oco>();
+            List<Oco> kiemtracheonguoc = new List<Oco>();
+            List<Oco> kiemtracheoxuoi = new List<Oco>();
 
             if (!danhco)
             {
                 for (int row = 0; row < listquanco.Count; row++)
                 {
-                    layViTri(row, currnetdong, currentcot);      
+                    layViTri(row, currnetdong, currentcot);
                 }
-            }else          
-            { 
+            } else
+            {
                 for (int row = 0; row < listquanco.Count; row++)
                 {
-                    if (listquanco[row].Dong == currnetdong && listquanco[row].Cot == currentcot )
+                    if (listquanco[row].Dong == currnetdong && listquanco[row].Cot == currentcot)
                     {
                         currensohuu = listquanco[row].Sohuu;
                     }
                 }
-                if (check.cothedichuyen(lastDong, lastcot, currnetdong, currentcot , currensohuu))
+                if (check.cothedichuyen(lastDong, lastcot, currnetdong, currentcot, currensohuu))
                 {
+
                     for (int row = 0; row < listquanco.Count; row++)
                     {
                         if (listquanco[row].Dong == lastDong && listquanco[row].Cot == lastcot)
                         {
                             listquanco.RemoveAt(row);
+                            _arrayChess[lastDong, lastcot].Sohuu = 0;
                             DanhCo(e.X, e.Y, graphics, lastsohuu);
-                            for (int i = 0; i < listquanco.Count; i++)
-                            {
-                                kiemtraDoc(i, currnetdong, currentcot, lastsohuu);
-                                kiemtraNgang(i, currnetdong, currentcot , lastsohuu);
-                                kiemTraCheo(i, currnetdong, currentcot, lastsohuu);  
-                            }
 
-                        }    
+                            kiemtradoc = kiemtraDoc(listquanco, currnetdong, currentcot, lastsohuu);
+                            kiemtranghang = kiemtraNgang(listquanco, currnetdong, currentcot, lastsohuu);
+                            kiemtracheoxuoi = kiemTraCheoXuoi(listquanco, currnetdong, currentcot, lastsohuu);
+                            kiemtracheonguoc = kiemTraCheoNguoc(listquanco, currnetdong, currentcot, lastsohuu);
+
+                        }
                     }
-                    
+
                 }
-                anCo();
+                if (kiemtradoc.Count == 2)
+                {
+                    for (int i = 0; i < kiemtradoc.Count; i++)
+                    {
+                        kiemtradoc[i].Sohuu = lastsohuu;
+                        luotdi = lastsohuu;
+                    }
+                }
+                if (kiemtranghang.Count == 2)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        kiemtranghang[i].Sohuu = lastsohuu;
+                        luotdi = lastsohuu;
+                    }
+                }
+                if (kiemtracheonguoc.Count == 2)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        kiemtracheonguoc[i].Sohuu = lastsohuu;
+                        luotdi = lastsohuu;
+                    }
+                }
+                if (kiemtracheoxuoi.Count == 2)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        kiemtracheoxuoi[i].Sohuu = lastsohuu;
+                        luotdi = lastsohuu;
+                    }
+                }
+
                 for (int row = 0; row < listquanco.Count; row++)
                 {
                     if (listquanco[row].Dong == currnetdong && listquanco[row].Cot == currentcot)
@@ -183,38 +212,26 @@ namespace co_ganh
                         for (int i = 0; i < listquanco.Count; i++)
                         {
                             kiemtraHetnuoc(i, currnetdong, currentcot);
-                           // kiemtraLienKe(i, currnetdong, currentcot);
                         }
 
                     }
                 }
                 clearnList();
-                Console.WriteLine("\n\n+++++++++++++++++++++++++++++++++++++++\n\n");
                 for (int item = 0; item < list.Count; item++)
                 {
-                    Console.WriteLine("---------doi phuong doi phuong doi phuong doi phuong--------           " + list[item].Dong + "   " + list[item].Cot);
-
-
-                }
-               /* Console.WriteLine("\n\n+++++++++++++++++++++++++++++++++++++++\n\n");
-                for (int item = 0; item < listQuanKeNhau.Count; item++)
-                {
-                    Console.WriteLine("---------lien ke lien ke lien ke lien ke lien ke--------           " + listQuanKeNhau[item].Dong + "   " + listQuanKeNhau[item].Cot);
-
-
-                }*/
-                for (int item = 0; item < list.Count; item++)
-                {
+                    kiemtradoc = new List<Oco>();
+                    kiemtranghang = new List<Oco>();
+                    kiemtracheoxuoi = new List<Oco>();
+                    kiemtracheonguoc = new List<Oco>();
                     if (list[item].Dong > 0 && list[item].Dong < ban_Co.Sodong && list[item].Cot > 0 && list[item].Cot < ban_Co.SoCot)
                     {
-                        for (int i = 0; i < listquanco.Count; i++)
-                        {
-                            kiemtraDoc(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemtraNgang(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemTraCheo(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                        }
+                        kiemtradoc = kiemtraDoc(listquanco, currnetdong, currentcot, list[item].Sohuu);
+                        kiemtranghang = kiemtraNgang(listquanco, currnetdong, currentcot, list[item].Sohuu);
+                        kiemtracheoxuoi = kiemTraCheoXuoi(listquanco, currnetdong, currentcot, list[item].Sohuu);
+                        kiemtracheonguoc = kiemTraCheoNguoc(listquanco, currnetdong, currentcot, list[item].Sohuu);
 
-                        if (listcot.Count == 2 && listdong.Count == 2 && listcheonguoc.Count == 0 && listcheoxuoi.Count == 0)
+
+                        if (kiemtradoc.Count == 2 && kiemtranghang.Count == 2 && kiemtracheoxuoi.Count == 0 && kiemtracheonguoc.Count == 0)
                         {
                             for (int i = 0; i < listquanco.Count; i++)
                             {
@@ -229,7 +246,7 @@ namespace co_ganh
                         }
                         else
                         {
-                            if (listcot.Count == 2 && listdong.Count == 2 && listcheonguoc.Count == 2 && listcheoxuoi.Count == 0)
+                            if (kiemtradoc.Count == 2 && kiemtranghang.Count == 2 && kiemtracheonguoc.Count == 2 && kiemtracheoxuoi.Count == 0)
                             {
                                 for (int i = 0; i < listquanco.Count; i++)
                                 {
@@ -244,7 +261,7 @@ namespace co_ganh
                             }
                             else
                             {
-                                if (listcot.Count == 2 && listdong.Count == 2 && listcheonguoc.Count == 2 && listcheoxuoi.Count == 2)
+                                if (kiemtradoc.Count == 2 && kiemtranghang.Count == 2 && kiemtracheonguoc.Count == 2 && kiemtracheoxuoi.Count == 2)
                                 {
                                     for (int i = 0; i < listquanco.Count; i++)
                                     {
@@ -260,19 +277,15 @@ namespace co_ganh
                             }
                         }
                     }
-                   if(list[item].Dong == 0 || list[item].Dong == ban_Co.Sodong)
+                    if (list[item].Dong == 0 || list[item].Dong == ban_Co.Sodong)
                     {
-                        for (int i = 0; i < listquanco.Count; i++)
+                        kiemtradoc = kiemtraDoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtranghang = kiemtraNgang(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheoxuoi = kiemTraCheoXuoi(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheonguoc = kiemTraCheoNguoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+
+                        if (kiemtradoc.Count == 1 && kiemtranghang.Count == 2)
                         {
-                            kiemtraDoc(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemtraNgang(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemTraCheo(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                        }
-                        //Console.WriteLine("-------ddddddddddddd dong 0---------- " + listcot.Count);
-                        //Console.WriteLine("-------ccccccccccccc dong 0---------- " + listdong.Count);
-                        if (listcot.Count == 1 && listdong.Count == 2 )
-                        {
-                                Console.WriteLine("------------------------------           "  + list[item].Dong + "   " + list[item].Cot);
                             for (int i = 0; i < listquanco.Count; i++)
                             {
                                 if (listquanco[i].Dong == list[item].Dong && listquanco[i].Cot == list[item].Cot)
@@ -287,18 +300,14 @@ namespace co_ganh
                     }
                     if (list[item].Cot == 0 || list[item].Cot == ban_Co.SoCot)
                     {
-                        for (int i = 0; i < listquanco.Count; i++)
+                        kiemtradoc = kiemtraDoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtranghang = kiemtraNgang(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheoxuoi = kiemTraCheoXuoi(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheonguoc = kiemTraCheoNguoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+
+                        if (kiemtradoc.Count == 2 && kiemtranghang.Count == 1)
                         {
-                            kiemtraDoc(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemtraNgang(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemTraCheo(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                        }
-                       // Console.WriteLine("-------ddddddddddddd cot 0---------- "+ listcot.Count);
-                       // Console.WriteLine("-------ccccccccccccc cot 0---------- " + listdong.Count);
-                        if (listcot.Count == 2 && listdong.Count == 1)
-                        {
-                                Console.WriteLine("------------------------------           " + list[item].Dong + "   " + list[item].Cot);
-                                for (int i = 0; i < listquanco.Count; i++)
+                            for (int i = 0; i < listquanco.Count; i++)
                             {
                                 if (listquanco[i].Dong == list[item].Dong && listquanco[i].Cot == list[item].Cot)
                                 {
@@ -311,19 +320,15 @@ namespace co_ganh
                         }
                     }
                     clearnList();
-                    if (list[item].Dong == 0 && ( list[item].Cot == 0 || list[item].Cot == ban_Co.SoCot))
+                    if (list[item].Dong == 0 && (list[item].Cot == 0 || list[item].Cot == ban_Co.SoCot))
                     {
-                        for (int i = 0; i < listquanco.Count; i++)
+                        kiemtradoc = kiemtraDoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtranghang = kiemtraNgang(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheoxuoi = kiemTraCheoXuoi(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheonguoc = kiemTraCheoNguoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+
+                        if (kiemtradoc.Count == 1 && kiemtranghang.Count == 1 && (kiemtracheoxuoi.Count == 1 || kiemtracheonguoc.Count == 1))
                         {
-                            kiemtraDoc(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemtraNgang(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemTraCheo(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                        }
-                        //Console.WriteLine("-------ddddddddddddd goc 0---------- " + listcot.Count);
-                        //Console.WriteLine("-------ccccccccccccc goc 0---------- " + listdong.Count);
-                        if (listcot.Count == 1 && listdong.Count == 1 && (listcheoxuoi.Count == 1 || listcheonguoc.Count == 1))
-                        {
-                            Console.WriteLine("------------------------------           " + list[item].Dong + "   " + list[item].Cot);
                             for (int i = 0; i < listquanco.Count; i++)
                             {
                                 if (listquanco[i].Dong == list[item].Dong && listquanco[i].Cot == list[item].Cot)
@@ -338,17 +343,13 @@ namespace co_ganh
                     }
                     if (list[item].Dong == ban_Co.Sodong && (list[item].Cot == 0 || list[item].Cot == ban_Co.SoCot))
                     {
-                        for (int i = 0; i < listquanco.Count; i++)
+                        kiemtradoc = kiemtraDoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtranghang = kiemtraNgang(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheoxuoi = kiemTraCheoXuoi(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        kiemtracheonguoc = kiemTraCheoNguoc(listquanco, list[item].Dong, list[item].Cot, list[item].Sohuu);
+                        if (kiemtradoc.Count == 1 && kiemtranghang.Count == 1 && (kiemtracheoxuoi.Count == 1 || kiemtracheonguoc.Count == 1))
                         {
-                            kiemtraDoc(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemtraNgang(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                            kiemTraCheo(i, list[item].Dong, list[item].Cot, list[item].Sohuu);
-                        }
-                       // Console.WriteLine("-------ddddddddddddd goc 4---------- " + listcot.Count);
-                        //Console.WriteLine("-------ccccccccccccc goc 4---------- " + listdong.Count);
-                        if (listcot.Count == 1 && listdong.Count == 1 && (listcheoxuoi.Count == 1 || listcheonguoc.Count == 1))
-                        {
-                            Console.WriteLine("------------------------------           " + list[item].Dong + "   " + list[item].Cot);
+
                             for (int i = 0; i < listquanco.Count; i++)
                             {
                                 if (listquanco[i].Dong == list[item].Dong && listquanco[i].Cot == list[item].Cot)
@@ -361,26 +362,39 @@ namespace co_ganh
                             }
                         }
                     }
-                   
+
                 }
-                for (int item = 0; item < list.Count -1; item++)
+                for (int item = 0; item < list.Count - 1; item++)
                 {
-                    for(int j =  item + 1; j < list.Count; j++)
+                    for (int j = item + 1; j < list.Count; j++)
                     {
-                        if((list[item].Dong == list[j].Dong && list[item].Cot > list[j].Cot) ||
+                        if ((list[item].Dong == list[j].Dong && list[item].Cot > list[j].Cot) ||
                             (list[item].Dong > list[j].Dong && list[item].Cot == list[j].Cot) ||
                             (list[item].Dong > list[j].Dong && list[item].Cot > list[j].Cot))
                         {
-                            Oco  arr = list[item];
+                            Oco arr = list[item];
                             list[item] = list[j];
                             list[j] = arr;
                         }
                     }
                 }
-                for (int item = 0; item < list.Count; item++)
-                {
-                    Console.WriteLine("mang sau khi sap xp --------------    " + list[item].Dong + " " + list[item].Cot);
+                List<Oco> abc = new List<Oco>();
+                if (list.Count == 2) {
+                    for (int item = 0; item < list.Count - 1; item++)
+                    {
+
+                        if (list[item].Dong == list[item + 1].Dong || list[item].Cot == list[item + 1].Cot)
+                        {
+
+                            abc.Add(list[item]);
+                            abc.Add(list[item + 1]);
+                        }
+
+                    }
                 }
+                Oco asdasd = findBestMove(_arrayChess);
+                Console.WriteLine(" lay dong  " + asdasd.Dong);
+                Console.WriteLine(" lay cot  " + asdasd.Cot);
                 graphics.Clear(panel_co_ganh.BackColor);
                 ban_Co.banco(graphics);
                 velaiquanco(graphics);
@@ -388,21 +402,19 @@ namespace co_ganh
                 danhco = false;
                 luotdis();
 
+
+
             }
         }
         private void clearnList()
         {
-            listcot.Clear();
-            listdong.Clear();
-            listcheoxuoi.Clear();
-            listcheonguoc.Clear();
             ListCoThat.Clear();
         }
         private void velaiquanco(Graphics graphics)
         {
             foreach (Oco oco in listquanco)
             {
-                if(oco.Sohuu == 1)
+                if (oco.Sohuu == 1)
                     ban_Co.veQuanCo(graphics, oco.Vitri, solidBack);
                 else
                      if (oco.Sohuu == 2)
@@ -412,16 +424,13 @@ namespace co_ganh
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         
+
             listquanco = new List<Oco>();
             graphics.Clear(panel_co_ganh.BackColor);
-           // Bitmap bitmap = new Bitmap(co_ganh.Properties.Resources.banco);
-            //panel_co_ganh.BackgroundImage = bitmap;
             ban_Co.banco(graphics);
             velaiquanco(graphics);
             khoitaomangoco();
             khoitaoquanco();
-           // MessageBox.Show("Trắng đi trước ! ");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -438,7 +447,7 @@ namespace co_ganh
             khoitaomangoco();
             khoitaoquanco();
             luotdis();
-                
+
         }
         private void btnPP_Click(object sender, EventArgs e)
         {
@@ -454,96 +463,99 @@ namespace co_ganh
                 timer1.Start();
             else
                 timer1.Stop();
-            
+
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-        private void kiemtraNgang(int i , int dong , int cot ,int lastsohuu)
+        #region kiem tra hang ngang
+        private List<Oco> kiemtraNgang(List<Oco> oco, int dong, int cot, int lastsohuu)
         {
-            if (listquanco[i].Dong == dong)
+            List<Oco> checknganng = new List<Oco>();
+            for (int i = 0; i < oco.Count; i++)
             {
-                if (listquanco[i].Cot == cot - 1 && listquanco[i].Sohuu != lastsohuu)
+                if (oco[i].Dong == dong)
                 {
-                    listdong.Add(listquanco[i]);
-                }
-                if (listquanco[i].Cot == cot + 1 && listquanco[i].Sohuu != lastsohuu)
-                {
-                    listdong.Add(listquanco[i]);
+                    if (oco[i].Cot == cot - 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        checknganng.Add(oco[i]);
+                    }
+                    if (oco[i].Cot == cot + 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        checknganng.Add(oco[i]);
+                    }
                 }
             }
+
+            return checknganng;
         }
-        private void kiemtraDoc(int i, int dong, int cot ,int lastsohuu)
+        #endregion
+        #region kiem tra hàng dọc
+        private List<Oco> kiemtraDoc(List<Oco> oco, int dong, int cot, int lastsohuu)
         {
-            if (listquanco[i].Cot == cot)
+            List<Oco> checkDoc = new List<Oco>();
+            for (int i = 0; i < oco.Count; i++)
             {
-                if (listquanco[i].Dong == dong - 1 && listquanco[i].Sohuu != lastsohuu)
+                if (oco[i].Cot == cot)
                 {
-                    listcot.Add(listquanco[i]);
-                }
-                if (listquanco[i].Dong == dong + 1 && listquanco[i].Sohuu != lastsohuu)
-                {
-                    listcot.Add(listquanco[i]);
+                    if (oco[i].Dong == dong - 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        checkDoc.Add(oco[i]);
+                    }
+                    if (oco[i].Dong == dong + 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        checkDoc.Add(oco[i]);
+                    }
                 }
             }
+            return checkDoc;
         }
-        private void kiemTraCheo(int i , int dong , int cot ,int lastsohuu)
+        #endregion
+        #region kiêm tra chéo
+        private List<Oco> kiemTraCheoXuoi(List<Oco> oco, int dong, int cot, int lastsohuu)
         {
-            if ((cot + dong) % 2 == 0)
+            List<Oco> ktCheoxuoi = new List<Oco>();
+            for (int i = 0; i < oco.Count; i++)
             {
-                if ((cot - listquanco[i].Cot) == 1 && (dong - listquanco[i].Dong) == 1 && listquanco[i].Sohuu != lastsohuu)
+                if ((cot + dong) % 2 == 0)
                 {
-                    listcheoxuoi.Add(listquanco[i]);
-                }
+                    if ((cot - oco[i].Cot) == 1 && (dong - oco[i].Dong) == 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        ktCheoxuoi.Add(oco[i]);
+                    }
 
-                if ((listquanco[i].Cot - cot) == 1 && (listquanco[i].Dong - dong) == 1 && listquanco[i].Sohuu != lastsohuu)
-                {
-                    listcheoxuoi.Add(listquanco[i]);
-                }
-
-                if ((cot - listquanco[i].Cot) == 1 && (listquanco[i].Dong - dong) == 1 && listquanco[i].Sohuu != lastsohuu)
-                {
-                    listcheonguoc.Add(listquanco[i]);
-                }
-
-                if ((listquanco[i].Cot - cot) == 1 && (dong - listquanco[i].Dong) == 1 && listquanco[i].Sohuu != lastsohuu)
-                {
-                    listcheonguoc.Add(listquanco[i]);
+                    if ((oco[i].Cot - cot) == 1 && (oco[i].Dong - dong) == 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        ktCheoxuoi.Add(oco[i]);
+                    }
                 }
             }
+            return ktCheoxuoi;
         }
-        private void anCo()
+        private List<Oco> kiemTraCheoNguoc(List<Oco> oco, int dong, int cot, int lastsohuu)
         {
-            if (listcot.Count == 2)
-                for (int i = 0; i < listcot.Count; i++)
+            List<Oco> ktCheonguoc = new List<Oco>();
+            for (int i = 0; i < oco.Count; i++)
+            {
+                if ((cot + dong) % 2 == 0)
                 {
-                    listcot[i].Sohuu = lastsohuu;
-                    luotdi = lastsohuu;
-                    canMove = true;
-                }
+                    if ((cot - oco[i].Cot) == 1 && (oco[i].Dong - dong) == 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        ktCheonguoc.Add(oco[i]);
+                    }
 
-            if (listdong.Count == 2)
-                for (int i = 0; i < listdong.Count; i++)
-                {
-                    listdong[i].Sohuu = lastsohuu;
-                    luotdi = lastsohuu;
+                    if ((oco[i].Cot - cot) == 1 && (dong - oco[i].Dong) == 1 && oco[i].Sohuu != lastsohuu)
+                    {
+                        ktCheonguoc.Add(oco[i]);
+                    }
                 }
-            
-            if (listcheoxuoi.Count == 2)
-                for (int i = 0; i < listcheoxuoi.Count; i++)
-                {
-                    listcheoxuoi[i].Sohuu = lastsohuu;
-                    luotdi = lastsohuu;
-                }
-            if (listcheonguoc.Count == 2)
-                for (int i = 0; i < listcheonguoc.Count; i++)
-                {
-                    listcheonguoc[i].Sohuu = lastsohuu;
-                    luotdi = lastsohuu;
-                }
+            }
+            return ktCheonguoc;
         }
+        #endregion
+        #region kiểm tra chiến thắng
         private void kiemtrasoquan()
         {
             for (int i = 0; i < listquanco.Count; i++)
@@ -562,13 +574,14 @@ namespace co_ganh
             }
             if (demQuanTrang == 16)
             {
-                MessageBox.Show("Người chơi " + tennguoi2+ " thắng !");
+                MessageBox.Show("Người chơi " + tennguoi2 + " thắng !");
                 return;
-            }           
+            }
             demQuanTrang = 0;
-            demQuanĐen = 0;  
+            demQuanĐen = 0;
         }
-        private void layViTri(int row , int dong , int cot)
+        #endregion
+        private void layViTri(int row, int dong, int cot)
         {
             if (listquanco[row].Dong == dong && listquanco[row].Cot == cot)
             {
@@ -598,8 +611,8 @@ namespace co_ganh
             tengnuoichoi1.Text = tennguoi1.ToString();
             tenguoichoi2.Text = tennguoi2.ToString();
         }
-      
-        private void kiemtraHetnuoc(int i , int dong , int cot )
+
+        private void kiemtraHetnuoc(int i, int dong, int cot)
         {
             if (listquanco[i].Dong == dong)
             {
@@ -646,7 +659,7 @@ namespace co_ganh
                 }
             }
         }
-        private void kiemtraLienKe(int i, int dong, int cot , int sohuu)
+        private void kiemtraLienKe(int i, int dong, int cot, int sohuu)
         {
             if (listquanco[i].Dong == dong)
             {
@@ -699,9 +712,9 @@ namespace co_ganh
             int randomIndex = rd.Next(0, 15);
             int cot = listquanco[randomIndex].Cot;
             int dong = listquanco[randomIndex].Dong;
-            if(listquanco[randomIndex].Sohuu == 1 )
-            ban_Co.veQuanCo(graphics, listquanco[randomIndex].Vitri, solidWhite);
-            
+            if (listquanco[randomIndex].Sohuu == 1)
+                ban_Co.veQuanCo(graphics, listquanco[randomIndex].Vitri, solidWhite);
+
             Console.WriteLine(dong + " + " + cot);
         }
 
@@ -709,5 +722,177 @@ namespace co_ganh
         {
             luotdis();
         }
+
+
+        #region thuật toán kìm kiếm
+
+
+        bool isMovesLeft(Oco[,] board)
+        {
+            for (int i = 0; i <= 4; i++)
+                for (int j = 0; j <= 4; j++)
+                    if (board[i, j].Sohuu == 0)
+                        return true;
+            return false;
+        }
+
+        int evaluate(Oco[,] b)
+        {
+            clearnList();
+            int demngang = 0;
+            int demcot = 0;
+            int demcheoxuoi = 0;
+            int demnguoc = 0;
+            for (int i = 0; i <= 4; i++)
+            {
+                for (int j = 0; j <= 4; j++)
+                {
+                    if (b[i, j].Dong == i)
+                    {
+                        if (b[i, j].Cot == j - 1 && b[i, j].Sohuu != 2)
+                            demngang++;
+                        if (b[i, j].Cot == j + 1 && b[i, j].Sohuu != 2)
+                            demngang++;
+                    }
+                    if (b[i,j].Cot == j)
+                    {
+                        if (b[i, j].Dong == i - 1 && b[i, j].Sohuu != 2)
+                            demcot++;
+                        if (b[i, j].Dong == i + 1 && b[i, j].Sohuu != 2)
+                            demcot++;
+                    }
+                    if ((i + j) % 2 == 0)
+                    {
+                        if ((j - b[i, j].Cot) == 1 && (i - b[i, j].Dong) == 1 && b[i, j].Sohuu != 2)
+                            demcheoxuoi++;
+                        if ((b[i, j].Cot - j) == 1 && (b[i, j].Dong - i) == 1 && b[i, j].Sohuu != 2)
+                            demcheoxuoi++;
+                        if ((j - b[i, j].Cot) == 1 && (b[i, j].Dong - i) == 1 && b[i, j].Sohuu != 2)
+                            demnguoc++;
+                        if ((b[i,j].Cot - j) == 1 && (i - b[i,j].Dong) == 1 && b[i,j].Sohuu != 2)
+                            demnguoc++;                      
+                    }
+                }
+            }
+            Console.Write(" -----------------------------   \n" );
+            if (demngang == 2)
+                return -10;
+            else
+                return +10;
+            //kiem tra cot
+            if (demcot == 2)
+                return -10;
+            else
+                return +10;
+            if (demnguoc == 2)
+                return -10;
+            else
+                return +10;
+            //kiem tra cot
+            if (demnguoc == 2)
+                return -10;
+            else
+                return +10;
+            return 0;
+
+
+        }
+
+        int minimax(Oco[,] board, int depth, bool isMax)
+        {
+            int score = evaluate(board);
+
+            if (score == +10)
+                return score;
+
+            if (score == -10)
+                return score;
+
+            if (isMovesLeft(board) == false)
+                return 0;
+
+            if (isMax)
+            {
+                int best = -1000;
+
+                for (int i = 0; i <= 4; i++)
+                {
+                    for (int j = 0; j <= 4; j++)
+                    {
+
+                        if (board[i,j].Sohuu == 0)
+                        {
+ 
+                            board[i,j].Sohuu = 2;
+
+                            best = Math.Max(best,
+                                minimax(board, depth + 1, !isMax));
+
+                            board[i,j].Sohuu = 0;
+                        }
+                    }
+                }
+                return best;
+            }
+
+
+            else
+            {
+                int best = 1000;
+
+                for (int i = 0; i <= 4; i++)
+                {
+                    for (int j = 0; j <= 4; j++)
+                    {
+
+                        if (board[i,j].Sohuu == 0)
+                        {
+  
+                            board[i,j].Sohuu = 1;
+
+                            best = Math.Min(best,
+                                   minimax(board, depth + 1, !isMax));
+
+
+                            board[i,j].Sohuu = 0;
+                        }
+                    }
+                }
+                return best;
+            }
+        }
+        Oco findBestMove(Oco[,] board)
+        {
+            int bestVal = -1000;
+            Oco bestMove = new Oco();
+            bestMove.Dong = -1;
+            bestMove.Cot = -1;
+
+            for (int i = 0; i <= 4; i++)
+            {
+                for (int j = 0; j <= 4; j++)
+                {
+
+                    if (board[i,j].Sohuu == 0)
+                    {
+                        board[i,j].Sohuu = 1;
+                        int moveVal = minimax(board, 0, false);
+
+                        board[i,j].Sohuu = 0;
+                      
+                        if (moveVal > bestVal)
+                        {
+                                bestMove.Dong = i;
+                                bestMove.Cot = j;
+                                bestVal = moveVal;
+                        }
+                    }
+                }
+            }
+            
+            return bestMove;
+        }
+        #endregion
+
     }
 }

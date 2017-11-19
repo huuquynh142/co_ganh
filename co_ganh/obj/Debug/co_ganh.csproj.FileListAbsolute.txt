@@ -18,3 +18,14 @@ D:\co_ganh\co_ganh\obj\Debug\co_ganh.coghanh.resources
 D:\co_ganh\co_ganh\obj\Debug\co_ganh.Properties.Resources.resources
 D:\co_ganh\co_ganh\obj\Debug\co_ganh.csproj.GenerateResource.Cache
 D:\YEAR_4\AI\co_ganh\co_ganh\obj\Debug\co_ganh.newGame.resources
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\bin\Debug\co_ganh.exe.config
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\bin\Debug\co_ganh.exe
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\bin\Debug\co_ganh.pdb
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.csprojResolveAssemblyReference.cache
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.coghanh.resources
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.newGame.resources
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.Properties.Resources.resources
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.csproj.GenerateResource.Cache
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.csproj.CoreCompileInputs.cache
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.exe
+D:\YEAR_4\AI\co_ganh_AI\co_ganh\obj\Debug\co_ganh.pdb
